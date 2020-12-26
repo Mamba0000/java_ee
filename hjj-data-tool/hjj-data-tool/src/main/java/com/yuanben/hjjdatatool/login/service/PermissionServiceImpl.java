@@ -15,7 +15,7 @@ import java.util.Date;
  * 权限管理Service实现类
  */
 @Service
-public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission>implements PermissionService {
+public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements PermissionService {
 
     @Override
     public boolean create(Permission permission) {
@@ -38,18 +38,18 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 
     @Override
     public Page<Permission> list(Long categoryId, String nameKeyword, String urlKeyword, Integer pageSize, Integer pageNum) {
-        Page<Permission> page = new Page<>(pageNum,pageSize);
+        Page<Permission> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Permission> wrapper = new QueryWrapper<>();
         LambdaQueryWrapper<Permission> lambda = wrapper.lambda();
-        if(categoryId!=null){
-            lambda.eq(Permission::getCategoryId,categoryId);
+        if (categoryId != null) {
+            lambda.eq(Permission::getCategoryId, categoryId);
         }
-        if(StrUtil.isNotEmpty(nameKeyword)){
-            lambda.like(Permission::getName,nameKeyword);
+        if (StrUtil.isNotEmpty(nameKeyword)) {
+            lambda.like(Permission::getName, nameKeyword);
         }
-        if(StrUtil.isNotEmpty(urlKeyword)){
-            lambda.like(Permission::getValue,urlKeyword);
+        if (StrUtil.isNotEmpty(urlKeyword)) {
+            lambda.like(Permission::getValue, urlKeyword);
         }
-        return page(page,wrapper);
+        return page(page, wrapper);
     }
 }

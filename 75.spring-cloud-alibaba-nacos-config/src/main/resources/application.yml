@@ -1,0 +1,12 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: my-project
+
+message:
+  a: hello a
+ext1:
+  b: hello b
+ext2:
+  c: hello c

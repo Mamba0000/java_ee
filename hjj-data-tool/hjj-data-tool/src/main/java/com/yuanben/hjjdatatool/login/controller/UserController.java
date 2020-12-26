@@ -42,7 +42,6 @@ public class UserController {
     private RoleService roleService;
 
 
-
     @ApiOperation(value = "用户注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
@@ -72,13 +71,13 @@ public class UserController {
     @RequestMapping(value = "/selectTest", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult selectTest() {
-        Page page  = new Page();
+        Page page = new Page();
         page.setSize(2);
         page.setCurrent(1);
 
         User user = new User();
         user.setId(100L);
-        return CommonResult.success(adminService.selectMyUsers(page,user));
+        return CommonResult.success(adminService.selectMyUsers(page, user));
     }
 
     @ApiOperation(value = "刷新token")
@@ -101,7 +100,7 @@ public class UserController {
     @ResponseBody
     public CommonResult getAdminInfo(@RequestParam(value = "token", required = false) String token) {
 
-        String username  = JWTUtil.getUsername(token);
+        String username = JWTUtil.getUsername(token);
 
         User user = adminService.getAdminByUsername(username);
         Map<String, Object> data = new HashMap<>();
@@ -109,9 +108,9 @@ public class UserController {
         data.put("menus", roleService.getMenuList(user.getId()));
         data.put("icon", user.getIcon());
         List<Role> roleList = adminService.getRoleList(user.getId());
-        if(CollUtil.isNotEmpty(roleList)){
+        if (CollUtil.isNotEmpty(roleList)) {
             List<String> roles = roleList.stream().map(Role::getName).collect(Collectors.toList());
-            data.put("roles",roles);
+            data.put("roles", roles);
         }
         return CommonResult.success(data);
     }
@@ -184,7 +183,7 @@ public class UserController {
     @ApiOperation("修改帐号状态")
     @RequestMapping(value = "/updateStatus/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult updateStatus(@PathVariable Long id,@RequestParam(value = "status") Integer status) {
+    public CommonResult updateStatus(@PathVariable Long id, @RequestParam(value = "status") Integer status) {
         User user = new User();
         user.setStatus(status);
         boolean success = adminService.update(id, user);

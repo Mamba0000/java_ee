@@ -3,6 +3,7 @@ package com.yuanben.hjjdatatool.common.api;
 
 import cn.hutool.core.convert.Convert;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class CommonPage<T> {
         result.setPageNum(Convert.toInt(pageResult.getCurrent()));
         result.setPageSize(Convert.toInt(pageResult.getSize()));
         result.setTotal(pageResult.getTotal());
-        result.setTotalPage(Convert.toInt(pageResult.getTotal()/pageResult.getSize()+1));
+        result.setTotalPage(Convert.toInt(pageResult.getTotal() / pageResult.getSize() + 1));
         result.setList(pageResult.getRecords());
         return result;
     }

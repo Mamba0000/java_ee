@@ -15,15 +15,14 @@ import java.util.Date;
  * <p>
  * 用户角色表
  * </p>
- *
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("tb_role")
-@ApiModel(value="Role对象", description="用户角色表")
+@ApiModel(value = "Role对象", description = "用户角色表")
 public class Role implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

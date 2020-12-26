@@ -20,7 +20,7 @@ import java.util.List;
  * 角色管理Service实现类
  */
 @Service
-public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>implements RoleService {
+public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
     @Autowired
     private RoleMenuRelationService roleMenuRelationService;
@@ -47,13 +47,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>implements Rol
 
     @Override
     public Page<Role> list(String keyword, Integer pageSize, Integer pageNum) {
-        Page<Role> page = new Page<>(pageNum,pageSize);
+        Page<Role> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Role> wrapper = new QueryWrapper<>();
         LambdaQueryWrapper<Role> lambda = wrapper.lambda();
-        if(StrUtil.isNotEmpty(keyword)){
-            lambda.like(Role::getName,keyword);
+        if (StrUtil.isNotEmpty(keyword)) {
+            lambda.like(Role::getName, keyword);
         }
-        return page(page,wrapper);
+        return page(page, wrapper);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>implements Rol
     public int allocMenu(Long roleId, List<Long> menuIds) {
         //先删除原有关系
         QueryWrapper<RoleMenuRelation> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(RoleMenuRelation::getRoleId,roleId);
+        wrapper.lambda().eq(RoleMenuRelation::getRoleId, roleId);
         roleMenuRelationService.remove(wrapper);
         //批量插入新关系
         List<RoleMenuRelation> relationList = new ArrayList<>();
@@ -93,7 +93,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>implements Rol
     public int allocResource(Long roleId, List<Long> resourceIds) {
         //先删除原有关系
         QueryWrapper<RolePermissionRelation> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(RolePermissionRelation::getRoleId,roleId);
+        wrapper.lambda().eq(RolePermissionRelation::getRoleId, roleId);
         roleResourceRelationService.remove(wrapper);
         //批量插入新关系
         List<RolePermissionRelation> relationList = new ArrayList<>();

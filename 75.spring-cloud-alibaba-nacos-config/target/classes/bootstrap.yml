@@ -1,0 +1,19 @@
+spring:
+  #  profiles:
+  #    active: dev
+  cloud:
+    nacos:
+      config:
+        server-addr: 42.194.199.234:8848
+        file-extension: yaml
+        prefix: febs
+        namespace: '2d8c8828-d92e-4467-be26-f930dd67b946' # publish
+        group: GROUP_A
+        extension-configs:
+          - dataId: ext-config-one.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+          - dataId: ext-config-one.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+        shared-configs: ext-config-one.yaml,ext-config-two.yaml

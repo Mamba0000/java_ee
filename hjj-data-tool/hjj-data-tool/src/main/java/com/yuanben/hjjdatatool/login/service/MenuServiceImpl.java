@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * 菜单管理Service实现类
  */
 @Service
-public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu>implements MenuService {
+public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
 
     @Override
     public boolean create(Menu menu) {
@@ -53,11 +53,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu>implements Men
 
     @Override
     public Page<Menu> list(Long parentId, Integer pageSize, Integer pageNum) {
-        Page<Menu> page = new Page<>(pageNum,pageSize);
+        Page<Menu> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Menu> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(Menu::getParentId,parentId)
+        wrapper.lambda().eq(Menu::getParentId, parentId)
                 .orderByDesc(Menu::getSort);
-        return page(page,wrapper);
+        return page(page, wrapper);
     }
 
     @Override

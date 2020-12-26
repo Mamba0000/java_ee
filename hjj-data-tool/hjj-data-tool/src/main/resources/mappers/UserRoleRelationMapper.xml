@@ -4,9 +4,9 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.yuanben.hjjdatatool.login.model.UserRoleRelation">
-        <id column="id" property="id" />
-        <result column="admin_id" property="adminId" />
-        <result column="role_id" property="roleId" />
+        <id column="id" property="id"/>
+        <result column="admin_id" property="adminId"/>
+        <result column="role_id" property="roleId"/>
     </resultMap>
 
 </mapper>

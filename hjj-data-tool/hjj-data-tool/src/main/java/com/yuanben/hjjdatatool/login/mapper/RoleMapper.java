@@ -10,7 +10,6 @@ import java.util.List;
  * <p>
  * 用户角色表 Mapper 接口
  * </p>
- *
  */
 
 public interface RoleMapper extends BaseMapper<Role> {

@@ -1,0 +1,6 @@
+framework module JYMJAD_SDK {
+  umbrella header "JYMJAD_SDK.h"
+
+  export *
+  module * { export * }
+}

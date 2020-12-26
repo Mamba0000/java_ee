@@ -46,9 +46,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public User getAdminByUsername(String username) {
-        User admin ;
+        User admin;
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(User::getUsername,username);
+        wrapper.lambda().eq(User::getUsername, username);
         List<User> adminList = list(wrapper);
         if (adminList != null && adminList.size() > 0) {
             admin = adminList.get(0);
@@ -82,7 +82,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         //密码需要客户端加密后传递
         try {
             User user = getAdminByUsername(username);
-            if(!user.getPassword().equals(password)){
+            if (!user.getPassword().equals(password)) {
                 Asserts.fail("密码不正确");
             }
             token = JWTUtil.sign(user.getUsername(), user.getPassword());
@@ -100,8 +100,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User record = new User();
         record.setLoginTime(new Date());
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(User::getUsername,username);
-        update(record,wrapper);
+        wrapper.lambda().eq(User::getUsername, username);
+        update(record, wrapper);
     }
 
     @Override
@@ -110,33 +110,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     public String refreshHeadToken(String oldToken) {
-      return  JWTUtil.refreshHeadToken(oldToken);
+        return JWTUtil.refreshHeadToken(oldToken);
     }
 
     @Override
     public Page<User> list(String keyword, Integer pageSize, Integer pageNum) {
-        Page<User> page = new Page<>(pageNum,pageSize);
+        Page<User> page = new Page<>(pageNum, pageSize);
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         LambdaQueryWrapper<User> lambda = wrapper.lambda();
-        if(StrUtil.isNotEmpty(keyword)){
-            lambda.like(User::getUsername,keyword);
-            lambda.or().like(User::getNickName,keyword);
+        if (StrUtil.isNotEmpty(keyword)) {
+            lambda.like(User::getUsername, keyword);
+            lambda.or().like(User::getNickName, keyword);
         }
-        return page(page,wrapper);
+        return page(page, wrapper);
     }
 
     @Override
     public boolean update(Long id, User admin) {
         admin.setId(id);
         User rawAdmin = getById(id);
-        if(rawAdmin.getPassword().equals(admin.getPassword())){
+        if (rawAdmin.getPassword().equals(admin.getPassword())) {
             //与原加密密码相同的不需要修改
             admin.setPassword(null);
-        }else{
+        } else {
             //与原加密密码不同的需要加密修改
-            if(StrUtil.isEmpty(admin.getPassword())){
+            if (StrUtil.isEmpty(admin.getPassword())) {
                 admin.setPassword(null);
-            }else{
+            } else {
                 admin.setPassword(admin.getPassword());
             }
         }
@@ -155,7 +155,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         int count = roleIds == null ? 0 : roleIds.size();
         //先删除原来的关系
         QueryWrapper<UserRoleRelation> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(UserRoleRelation::getAdminId,adminId);
+        wrapper.lambda().eq(UserRoleRelation::getAdminId, adminId);
         adminRoleRelationService.remove(wrapper);
         //建立新关系
         if (!CollectionUtils.isEmpty(roleIds)) {
@@ -179,30 +179,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public List<Permission> getResourceList(Long adminId) {
         List<Permission> resourceList = null;
-        if(CollUtil.isNotEmpty(resourceList)){
-            return  resourceList;
+        if (CollUtil.isNotEmpty(resourceList)) {
+            return resourceList;
         }
         resourceList = permissionMapper.getResourceList(adminId);
-        if(CollUtil.isNotEmpty(resourceList)){
+        if (CollUtil.isNotEmpty(resourceList)) {
         }
         return resourceList;
     }
 
     @Override
     public int updatePassword(UpdateUserPasswordParam param) {
-        if(StrUtil.isEmpty(param.getUsername())
-                ||StrUtil.isEmpty(param.getOldPassword())
-                ||StrUtil.isEmpty(param.getNewPassword())){
+        if (StrUtil.isEmpty(param.getUsername())
+                || StrUtil.isEmpty(param.getOldPassword())
+                || StrUtil.isEmpty(param.getNewPassword())) {
             return -1;
         }
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(User::getUsername,param.getUsername());
+        wrapper.lambda().eq(User::getUsername, param.getUsername());
         List<User> adminList = list(wrapper);
-        if(CollUtil.isEmpty(adminList)){
+        if (CollUtil.isEmpty(adminList)) {
             return -2;
         }
         User user = adminList.get(0);
-        if(!param.getOldPassword().equals(user.getPassword())){
+        if (!param.getOldPassword().equals(user.getPassword())) {
             return -3;
         }
         user.setPassword(param.getNewPassword());
@@ -211,8 +211,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
 
-    public IPage<User> selectMyUsers(Page<User> page , @Param("user") User user) {
-        return (this.baseMapper.selectMyUsers(page,user));
+    public IPage<User> selectMyUsers(Page<User> page, @Param("user") User user) {
+        return (this.baseMapper.selectMyUsers(page, user));
     }
 
 }

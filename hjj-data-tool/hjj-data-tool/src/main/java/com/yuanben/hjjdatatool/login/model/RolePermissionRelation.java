@@ -14,15 +14,14 @@ import java.io.Serializable;
  * <p>
  * 角色权限关系表
  * </p>
- *
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("tb_role_permission_relation")
-@ApiModel(value="RolePermissionRelation对象", description="角色权限关系表")
+@ApiModel(value = "RolePermissionRelation对象", description = "角色权限关系表")
 public class RolePermissionRelation implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

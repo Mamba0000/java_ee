@@ -54,15 +54,14 @@ public class MyRealm extends AuthorizingRealm {
 //        return simpleAuthorizationInfo;
 
 
-
         String username = JWTUtil.getUsername(principals.toString());
 
         User user = userService.getAdminByUsername(username);
-        List<Permission> resources= userService.getResourceList(user.getId());
+        List<Permission> resources = userService.getResourceList(user.getId());
         userService.getRoleList(user.getId());
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.addRole("role1");
-        Set<String> permission = new HashSet<String>(Arrays.asList("usre:add","user:delet"));
+        Set<String> permission = new HashSet<String>(Arrays.asList("usre:add", "user:delet"));
         simpleAuthorizationInfo.addStringPermissions(permission);
         return simpleAuthorizationInfo;
     }
@@ -84,7 +83,7 @@ public class MyRealm extends AuthorizingRealm {
             throw new AuthenticationException("User didn't existed!");
         }
 
-        if (! JWTUtil.verify(token,user.getUsername(), user.getPassword())) {
+        if (!JWTUtil.verify(token, user.getUsername(), user.getPassword())) {
             throw new AuthenticationException("Username or password error");
         }
         return new SimpleAuthenticationInfo(token, token, "my_realm");
