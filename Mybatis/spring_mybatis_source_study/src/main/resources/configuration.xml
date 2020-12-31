@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--该配置文件是为了学习源码而配置的 不需要太在意 -->
+
+    <!-- 指定properties配置文件， 我这里面配置的是数据库相关 -->
+    <properties>
+        <property name="driver" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/mybatis_study"/>
+        <property name="username" value="root"/>
+        <property name="password" value="12345678"/>
+    </properties>
+
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!--
+                如果上面没有指定数据库配置的properties文件，那么此处可以这样直接配置
+              <property name="driver" value="com.mysql.jdbc.Driver"/>
+              <property name="url" value="jdbc:mysql://localhost:3306/test1"/>
+              <property name="username" value="root"/>
+              <property name="password" value="root"/>
+               -->
+
+                <!-- 上面指定了数据库配置文件， 配置文件里面也是对应的这四个属性 -->
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 映射文件，mybatis精髓， 后面才会细讲 -->
+    <mappers>
+        <mapper class="com.example.spring.mybatis.source_study.demo.mapper.UserMapper"/>
+
+<!--                <mapper url="file:///Users/robin/Documents/github/java_ee/Spring_Mybatis_Study/src/main/resources/mappers/UserMapper.xml"/>-->
+
+    </mappers>
+
+</configuration>

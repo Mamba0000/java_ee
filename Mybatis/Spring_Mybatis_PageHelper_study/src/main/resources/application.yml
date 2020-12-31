@@ -1,0 +1,24 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    username: root
+    password: 12345678
+    url: jdbc:mysql://localhost:3306/spring_mybatis_pageHelper?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mappers/*Mapper.xml
+  type-aliases-package: com.tk.mybatis.study.pojo  #设置了别名必须设置别名的包
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #show sql // log4j 怎么配？
+
+mapper:
+  not-empty: false
+  identity: MYSQL
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
