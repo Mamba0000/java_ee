@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.tk.mybatis.study.mapper.UserMapper">
+<mapper namespace="com.example.spring.mybatis.source_study.demo.mapper.UserMapper">
 
 
-    <resultMap id="userResultMap" type="com.tk.mybatis.study.pojo.User">
+    <resultMap id="userResultMap" type="com.example.spring.mybatis.source_study.demo.pojo.User">
         <!-- 练习别名 类型转换处理器 -->
-        <result typeHandler="com.tk.mybatis.study.pojo.GenderTypeHandler" column="gender"
-                javaType="com.tk.mybatis.study.pojo.Gender"
+        <result typeHandler="com.example.spring.mybatis.source_study.demo.pojo.GenderTypeHandler" column="gender"
+                javaType="com.example.spring.mybatis.source_study.demo.pojo.Gender"
                 jdbcType="INTEGER"
                 property="gender"/>
         <result property="name" column="name"/>
