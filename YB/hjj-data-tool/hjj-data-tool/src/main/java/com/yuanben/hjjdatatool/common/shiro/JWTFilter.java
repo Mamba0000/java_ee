@@ -1,6 +1,10 @@
 package com.yuanben.hjjdatatool.common.shiro;
 
+import com.yuanben.hjjdatatool.common.api.CommonResult;
+import com.yuanben.hjjdatatool.common.api.ResultCode;
+import com.yuanben.hjjdatatool.common.util.JsonConvertUtil;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
+import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -11,6 +15,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class JWTFilter extends BasicHttpAuthenticationFilter {
 
@@ -23,6 +28,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
         HttpServletRequest req = (HttpServletRequest) request;
+        // 登录成功后把令牌从这里回传给服务器验证
         String authorization = req.getHeader("Authorization");
         return authorization != null;
     }
@@ -34,7 +40,6 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String authorization = httpServletRequest.getHeader("Authorization");
-
         JWTToken token = new JWTToken(authorization);
         // 提交给realm进行登入，如果错误他会抛出异常并被捕获
         getSubject(request, response).login(token);
@@ -42,23 +47,24 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         return true;
     }
 
-    /**
-     * 这里我们详细说明下为什么最终返回的都是true，即允许访问
-     * 例如我们提供一个地址 GET /article
-     * 登入用户和游客看到的内容是不同的
-     * 如果在这里返回了false，请求会被直接拦截，用户看不到任何东西
-     * 所以我们在这里返回true，Controller中可以通过 subject.isAuthenticated() 来判断用户是否登入
-     * 如果有些权限只有登入用户才能访问，我们只需要在方法上面加上 @RequiresAuthentication 注解即可
-     * 但是这样做有一个缺点，就是不能够对GET,POST等请求进行分别过滤鉴权(因为我们重写了官方的方法)，但实际上对应用影响不大
-     */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         if (isLoginAttempt(request, response)) {
             try {
                 executeLogin(request, response);
             } catch (Exception e) {
-                response401(request, response);
+                response401(response, "");
             }
+        }else {
+            // 没有携带Token
+            HttpServletRequest httpServletRequest = WebUtils.toHttp(request);
+            // 获取当前请求类型
+            String httpMethod = httpServletRequest.getMethod();
+            // 获取当前请求URI
+            String requestURI = httpServletRequest.getRequestURI();
+            LOGGER.info("当前请求 {} Authorization属性(Token)为空 请求类型 {}", requestURI, httpMethod);
+            response401(response, "请先登录");
+            return false;
         }
         return true;
     }
@@ -82,14 +88,30 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     }
 
     /**
-     * 将非法请求跳转到 /401
+     * 无需转发，直接返回Response信息
      */
-    private void response401(ServletRequest req, ServletResponse resp) {
-        try {
-            HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
-            httpServletResponse.sendRedirect("/401");
+    private void response401(ServletResponse response, String msg) {
+        HttpServletResponse httpServletResponse = WebUtils.toHttp(response);
+        httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+        httpServletResponse.setCharacterEncoding("UTF-8");
+        httpServletResponse.setContentType("application/json; charset=utf-8");
+        try (PrintWriter out = httpServletResponse.getWriter()) {
+            out.append(JsonConvertUtil.objectToJson(CommonResult.failed(ResultCode.UNAUTHORIZED)));
         } catch (IOException e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("直接返回Response信息出现IOException异常:{}X", e.getMessage());
+            throw new RuntimeException("直接返回Response信息出现IOException异常:" + e.getMessage());
         }
     }
+
+//    /**
+//     * 将非法请求跳转到 /401
+//     */
+//    private void response401(ServletRequest req, ServletResponse resp) {
+//        try {
+//            HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
+//            httpServletResponse.sendRedirect("/401");
+//        } catch (IOException e) {
+//            LOGGER.error(e.getMessage());
+//        }
+//    }
 }

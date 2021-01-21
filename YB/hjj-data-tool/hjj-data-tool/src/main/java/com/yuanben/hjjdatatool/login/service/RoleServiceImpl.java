@@ -30,6 +30,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     private MenuMapper menuMapper;
     @Autowired
     private PermissionMapper permissionMapper;
+    @Autowired
+    private RoleMapper roleMapper;
 
     @Override
     public boolean create(Role role) {
@@ -106,4 +108,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         roleResourceRelationService.saveBatch(relationList);
         return resourceIds.size();
     }
+
+    @Override
+    public List<Role> getRoleListByUserId(Long id) {
+        roleMapper.getRoleListByUserid(id);
+        return null;
+    }
+
 }

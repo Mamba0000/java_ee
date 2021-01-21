@@ -17,8 +17,8 @@ public class JWTUtil {
 
     private static final String SECRET = "hjj-data-secret";
 
-    // 过期时间5分钟
-    private static final long EXPIRE_TIME = 5 * 60 * 1000;
+    // 过期时间 8 天 目前单位毫秒
+    private static final long EXPIRE_TIME = 8 * 24 * 60  * 60 * 1000;
 
     /**
      * 校验token是否正确
@@ -78,7 +78,7 @@ public class JWTUtil {
         if (tokenRefreshJustBefore(oldToken, 30 * 60)) {
             return oldToken;
         } else {
-            return sign(getUsername(oldToken), SECRET);
+            return sign(getUsername(oldToken));
         }
     }
 
@@ -103,13 +103,12 @@ public class JWTUtil {
      * 生成签名,5min后过期
      *
      * @param username 用户名
-     * @param secret   用户的密码
      * @return 加密的token
      */
-    public static String sign(String username, String secret) {
+    public static String sign(String username) {
         try {
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
-            Algorithm algorithm = Algorithm.HMAC256(secret);
+            Algorithm algorithm = Algorithm.HMAC256(SECRET);
             // 附带username信息
             return JWT.create()
                     .withClaim("username", username)

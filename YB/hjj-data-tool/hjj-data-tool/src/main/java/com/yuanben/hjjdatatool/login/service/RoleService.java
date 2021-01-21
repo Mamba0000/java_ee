@@ -54,4 +54,7 @@ public interface RoleService extends IService<Role> {
      */
     @Transactional
     int allocResource(Long roleId, List<Long> resourceIds);
+
+
+    List<Role> getRoleListByUserId(Long id);
 }

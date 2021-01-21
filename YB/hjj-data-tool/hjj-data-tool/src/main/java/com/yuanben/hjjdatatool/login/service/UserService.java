@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yuanben.hjjdatatool.common.api.CommonResult;
 import com.yuanben.hjjdatatool.login.dto.UserParam;
 import com.yuanben.hjjdatatool.login.dto.UpdateUserPasswordParam;
 import com.yuanben.hjjdatatool.login.model.User;
@@ -23,7 +24,7 @@ public interface UserService extends IService<User> {
     /**
      * 根据用户名获取管理员
      */
-    User getAdminByUsername(String username);
+    User geUserByName(String username);
 
     /**
      * 注册功能
@@ -73,9 +74,19 @@ public interface UserService extends IService<User> {
     List<Role> getRoleList(Long adminId);
 
     /**
+     * 获取用户对于角色的名称唯一值
+     */
+    public List<String> getRoleNameList(Long useId);
+
+    /**
      * 获取指定用户的可访问权限
      */
     List<Permission> getResourceList(Long adminId);
+
+    /**
+     * 获取指定用户的可访问权限 Value
+     */
+    List<String> getResourceVauleList(Long adminId);
 
     /**
      * 修改密码
@@ -87,5 +98,7 @@ public interface UserService extends IService<User> {
     // UserVo 参数可以自定义
     IPage<User> selectMyUsers(Page<User> page, @Param("user") User user);
 
+
+    CommonResult<IPage<User>> selectMyUsers2(@Param("user") User user);
 
 }

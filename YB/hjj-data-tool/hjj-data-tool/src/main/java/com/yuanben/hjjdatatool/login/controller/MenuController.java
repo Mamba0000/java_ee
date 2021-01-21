@@ -25,6 +25,7 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
+    // good
     @ApiOperation("添加菜单")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
@@ -37,6 +38,7 @@ public class MenuController {
         }
     }
 
+    // good
     @ApiOperation("修改菜单")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     @ResponseBody

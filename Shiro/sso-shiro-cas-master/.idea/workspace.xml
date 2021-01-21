@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="368da054-cde4-4c6f-ab5e-73ba96428ecd" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../boot-shiro-session-master/src/main/java/com/example/demo/common/entity/Base64.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../boot-shiro-session-master/src/main/java/com/example/demo/common/entity/EncryptUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../YB/hjj-data-tool/hjj-data-tool/src/hjj_data_tool.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../RabbitMQ/springboot-rabbitmq-master/springboot-producer/src/main/java/com/sxw/springbootproducer/config/task/TaskSchedulerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../RabbitMQ/springboot-rabbitmq-master/springboot-producer/src/main/java/com/sxw/springbootproducer/config/task/TaskSchedulerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../YB/hjj-data-tool/hjj-data-tool/src/main/java/com/yuanben/hjjdatatool/common/shiro/MyRealm.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../YB/hjj-data-tool/hjj-data-tool/src/main/java/com/yuanben/hjjdatatool/common/shiro/MyRealm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../YB/hjj-data-tool/hjj-data-tool/src/main/java/com/yuanben/hjjdatatool/login/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../YB/hjj-data-tool/hjj-data-tool/src/main/java/com/yuanben/hjjdatatool/login/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../YB/hjj-data-tool/hjj-data-tool/src/main/java/com/yuanben/hjjdatatool/login/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../YB/hjj-data-tool/hjj-data-tool/src/main/java/com/yuanben/hjjdatatool/login/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../YB/hjj-data-tool/hjj-data-tool/src/main/java/com/yuanben/hjjdatatool/login/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../YB/hjj-data-tool/hjj-data-tool/src/main/java/com/yuanben/hjjdatatool/login/service/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../YB/hjj-data-tool/hjj-data-tool/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../../YB/hjj-data-tool/hjj-data-tool/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../YB/hjj-data-tool/hjj-data-tool/src/test/java/com/yuanben/hjjdatatool/HjjDataToolApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../YB/hjj-data-tool/hjj-data-tool/src/test/java/com/yuanben/hjjdatatool/HjjDataToolApplicationTests.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="$PROJECT_DIR$/../../../../java/maven/apache-maven-3.6.3/conf/repository" />
+        <option name="mavenHome" value="$PROJECT_DIR$/../../../../java/maven/apache-maven-3.6.3" />
+        <option name="userSettingsFile" value="$PROJECT_DIR$/../../../../java/maven/apache-maven-3.6.3/conf/settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1n3NaVTlXjozc6nPGGmYdSKRdZt" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="368da054-cde4-4c6f-ab5e-73ba96428ecd" name="Default Changelist" comment="" />
+      <created>1610614877953</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1610614877953</updated>
+      <workItem from="1610614882355" duration="5178000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

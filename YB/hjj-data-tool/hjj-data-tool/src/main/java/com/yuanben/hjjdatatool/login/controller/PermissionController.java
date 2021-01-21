@@ -18,8 +18,8 @@ import java.util.List;
  * 权限管理Controller
  */
 @Controller
-@Api(tags = "UmsResourceController", description = "权限管理")
-@RequestMapping("/resource")
+@Api(tags = "PermissionController", description = "权限管理")
+@RequestMapping("/permission")
 public class PermissionController {
 
     @Autowired

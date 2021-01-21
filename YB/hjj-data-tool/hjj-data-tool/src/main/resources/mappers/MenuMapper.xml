@@ -32,7 +32,7 @@
         LEFT JOIN tb_role_menu_relation rmr ON r.id = rmr.role_id
         LEFT JOIN tb_menu m ON rmr.menu_id = m.id
         WHERE
-        arr.admin_id = #{adminId}
+        arr.user_id = #{userId}
         AND m.id IS NOT NULL
         GROUP BY
         m.id

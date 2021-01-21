@@ -14,6 +14,7 @@ import com.yuanben.hjjdatatool.login.service.UserService;
 import com.yuanben.hjjdatatool.login.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,7 @@ public class UserController {
     private String tokenHead;
 
     @Autowired
-    private UserService adminService;
+    private UserService userService;
     @Autowired
     private RoleService roleService;
 
@@ -46,7 +47,7 @@ public class UserController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult<User> register(@Validated @RequestBody UserParam userParam) {
-        User user = adminService.register(userParam);
+        User user = userService.register(userParam);
         if (user == null) {
             return CommonResult.failed();
         }
@@ -57,7 +58,7 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult login(@Validated @RequestBody UserLoginParam userLoginParam) {
-        String token = adminService.login(userLoginParam.getUsername(), userLoginParam.getPassword());
+        String token = userService.login(userLoginParam.getUsername(), userLoginParam.getPassword());
         if (token == null) {
             return CommonResult.validateFailed("用户名或密码错误");
         }
@@ -66,6 +67,9 @@ public class UserController {
         tokenMap.put("tokenHead", tokenHead);
         return CommonResult.success(tokenMap);
     }
+
+
+
 
     @ApiOperation(value = "selectTest")
     @RequestMapping(value = "/selectTest", method = RequestMethod.POST)
@@ -77,7 +81,7 @@ public class UserController {
 
         User user = new User();
         user.setId(100L);
-        return CommonResult.success(adminService.selectMyUsers(page, user));
+        return CommonResult.success(userService.selectMyUsers(page, user));
     }
 
     @ApiOperation(value = "刷新token")
@@ -85,7 +89,7 @@ public class UserController {
     @ResponseBody
     public CommonResult refreshToken(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
-        String refreshToken = adminService.refreshToken(token);
+        String refreshToken = userService.refreshToken(token);
         if (refreshToken == null) {
             return CommonResult.failed("token已经过期！");
         }
@@ -102,12 +106,12 @@ public class UserController {
 
         String username = JWTUtil.getUsername(token);
 
-        User user = adminService.getAdminByUsername(username);
+        User user = userService.geUserByName(username);
         Map<String, Object> data = new HashMap<>();
         data.put("username", user.getUsername());
         data.put("menus", roleService.getMenuList(user.getId()));
         data.put("icon", user.getIcon());
-        List<Role> roleList = adminService.getRoleList(user.getId());
+        List<Role> roleList = userService.getRoleList(user.getId());
         if (CollUtil.isNotEmpty(roleList)) {
             List<String> roles = roleList.stream().map(Role::getName).collect(Collectors.toList());
             data.put("roles", roles);
@@ -125,10 +129,11 @@ public class UserController {
     @ApiOperation("根据用户名或姓名分页获取用户列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
+    @RequiresPermissions("//")
     public CommonResult<CommonPage<User>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        Page<User> adminList = adminService.list(keyword, pageSize, pageNum);
+        Page<User> adminList = userService.list(keyword, pageSize, pageNum);
         return CommonResult.success(CommonPage.restPage(adminList));
     }
 
@@ -136,7 +141,7 @@ public class UserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<User> getItem(@PathVariable Long id) {
-        User admin = adminService.getById(id);
+        User admin = userService.getById(id);
         return CommonResult.success(admin);
     }
 
@@ -144,7 +149,7 @@ public class UserController {
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult update(@PathVariable Long id, @RequestBody User admin) {
-        boolean success = adminService.update(id, admin);
+        boolean success = userService.update(id, admin);
         if (success) {
             return CommonResult.success(null);
         }
@@ -155,7 +160,7 @@ public class UserController {
     @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult updatePassword(@Validated @RequestBody UpdateUserPasswordParam updatePasswordParam) {
-        int status = adminService.updatePassword(updatePasswordParam);
+        int status = userService.updatePassword(updatePasswordParam);
         if (status > 0) {
             return CommonResult.success(status);
         } else if (status == -1) {
@@ -172,8 +177,9 @@ public class UserController {
     @ApiOperation("删除指定用户信息")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     @ResponseBody
+    @RequiresPermissions("user:delete")
     public CommonResult delete(@PathVariable Long id) {
-        boolean success = adminService.delete(id);
+        boolean success = userService.delete(id);
         if (success) {
             return CommonResult.success(null);
         }
@@ -186,7 +192,7 @@ public class UserController {
     public CommonResult updateStatus(@PathVariable Long id, @RequestParam(value = "status") Integer status) {
         User user = new User();
         user.setStatus(status);
-        boolean success = adminService.update(id, user);
+        boolean success = userService.update(id, user);
         if (success) {
             return CommonResult.success(null);
         }
@@ -198,7 +204,7 @@ public class UserController {
     @ResponseBody
     public CommonResult updateRole(@RequestParam("adminId") Long adminId,
                                    @RequestParam("roleIds") List<Long> roleIds) {
-        int count = adminService.updateRole(adminId, roleIds);
+        int count = userService.updateRole(adminId, roleIds);
         if (count >= 0) {
             return CommonResult.success(count);
         }
@@ -208,9 +214,11 @@ public class UserController {
     @ApiOperation("获取指定用户的角色")
     @RequestMapping(value = "/role/{adminId}", method = RequestMethod.GET)
     @ResponseBody
+    @RequiresPermissions("user:select")
     public CommonResult<List<Role>> getRoleList(@PathVariable Long adminId) {
-        List<Role> roleList = adminService.getRoleList(adminId);
+        List<Role> roleList = userService.getRoleList(adminId);
         return CommonResult.success(roleList);
     }
+
 
 }

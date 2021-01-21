@@ -20,7 +20,7 @@ import java.util.List;
  * 用户角色管理
  */
 @Controller
-@Api(tags = "UmsRoleController", description = "用户角色管理")
+@Api(tags = "RoleController", description = "用户角色管理")
 @RequestMapping("/role")
 public class RoleController {
     @Autowired

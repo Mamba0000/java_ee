@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yuanben.hjjdatatool.common.api.CommonResult;
 import com.yuanben.hjjdatatool.common.exception.Asserts;
 import com.yuanben.hjjdatatool.common.shiro.JWTUtil;
 import com.yuanben.hjjdatatool.login.dto.UserParam;
@@ -16,7 +17,6 @@ import com.yuanben.hjjdatatool.login.mapper.UserMapper;
 import com.yuanben.hjjdatatool.login.mapper.PermissionMapper;
 import com.yuanben.hjjdatatool.login.mapper.RoleMapper;
 import com.yuanben.hjjdatatool.login.model.*;
-import io.jsonwebtoken.Claims;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +28,8 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 管理员管理Service实现类
@@ -45,14 +47,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private PermissionMapper permissionMapper;
 
     @Override
-    public User getAdminByUsername(String username) {
-        User admin;
+    public User geUserByName(String username) {
+        User user;
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(User::getUsername, username);
         List<User> adminList = list(wrapper);
         if (adminList != null && adminList.size() > 0) {
-            admin = adminList.get(0);
-            return admin;
+            user = adminList.get(0);
+            return user;
         }
         return null;
     }
@@ -81,11 +83,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String token = null;
         //密码需要客户端加密后传递
         try {
-            User user = getAdminByUsername(username);
+            User user = geUserByName(username);
             if (!user.getPassword().equals(password)) {
                 Asserts.fail("密码不正确");
             }
-            token = JWTUtil.sign(user.getUsername(), user.getPassword());
+            token = JWTUtil.sign(user.getUsername());
             updateLoginTimeByUsername(username);
         } catch (Exception e) {
             LOGGER.warn("登录异常:{}", e.getMessage());
@@ -172,8 +174,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public List<Role> getRoleList(Long adminId) {
-        return roleMapper.getRoleList(adminId);
+    public List<Role> getRoleList(Long useId) {
+        return roleMapper.getRoleListByUserid(useId);
+    }
+
+
+    public List<String> getRoleNameList(Long useId) {
+        List<Role> roles = roleMapper.getRoleListByUserid(useId);
+        return roles.stream().map(new Function<Role, String>() {
+            @Override
+            public String apply(Role role) {
+                return role.getName();
+            }
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -187,6 +200,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         return resourceList;
     }
+
+    @Override
+    public List<String> getResourceVauleList(Long adminId) {
+        List<Permission> roles = permissionMapper.getResourceList(adminId);
+        return roles.stream().map(new Function<Permission, String>() {
+            @Override
+            public String apply(Permission permission) {
+                return permission.getValue();
+            }
+        }).collect(Collectors.toList());
+    }
+
 
     @Override
     public int updatePassword(UpdateUserPasswordParam param) {
@@ -210,9 +235,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return 1;
     }
 
-
     public IPage<User> selectMyUsers(Page<User> page, @Param("user") User user) {
         return (this.baseMapper.selectMyUsers(page, user));
+    }
+
+    public CommonResult<IPage<User>> selectMyUsers2(@Param("user") User user) {
+        return null;
     }
 
 }

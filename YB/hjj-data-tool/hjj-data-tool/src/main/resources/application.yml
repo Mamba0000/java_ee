@@ -16,3 +16,9 @@ mybatis-plus:
     auto-mapping-behavior: partial
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+jwt:
+  tokenHead: AAAA
+  tokenHeader: VVVV
+  enableAuthentication: false
+

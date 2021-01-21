@@ -17,7 +17,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
     /**
      * 根据用户ID获取菜单
      */
-    List<Menu> getMenuList(@Param("adminId") Long adminId);
+    List<Menu> getMenuList(@Param("userId") Long userId);
 
     /**
      * 根据角色ID获取菜单

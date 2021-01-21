@@ -8,4 +8,6 @@
         <result column="role_id" property="roleId"/>
         <result column="resource_id" property="resourceId"/>
     </resultMap>
+
+
 </mapper>

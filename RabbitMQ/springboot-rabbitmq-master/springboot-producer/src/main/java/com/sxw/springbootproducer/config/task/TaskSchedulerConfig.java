@@ -15,8 +15,11 @@ public class TaskSchedulerConfig implements SchedulingConfigurer {
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+        System.out.printf("....");
         taskRegistrar.setScheduler(taskScheduler());
     }
+
+
 
     @Bean(destroyMethod="shutdown")
     public Executor taskScheduler(){
